@@ -10,4 +10,7 @@ public class Event extends Entity{
 		public Event(String dinhDanh, String nhan) {
 			super(dinhDanh, nhan);
 		}
+		public Event() {
+			super();
+		};
 }

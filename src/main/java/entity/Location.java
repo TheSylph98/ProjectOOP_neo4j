@@ -10,4 +10,7 @@ public class Location extends Entity{
 	public Location(String dinhDanh, String nhan) {
 		super(dinhDanh, nhan);
 	}
+	public Location() {
+		super();
+	};
 }

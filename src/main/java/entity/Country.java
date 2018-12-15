@@ -10,4 +10,7 @@ public class Country extends Entity{
 		public Country(String dinhDanh, String nhan) {
 			super(dinhDanh, nhan);
 		}
+		public Country() {
+			super();
+		};
 }

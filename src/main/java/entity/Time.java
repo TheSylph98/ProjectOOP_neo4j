@@ -10,4 +10,7 @@ public class Time extends Entity{
 		public Time(String dinhDanh, String nhan) {
 			super(dinhDanh, nhan);
 		}
+		public Time() {
+			super();
+		};
 }

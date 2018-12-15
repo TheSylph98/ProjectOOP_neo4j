@@ -28,6 +28,7 @@ public class Entity {
 			this.nhan = tenHienThi;
 			this.moTa = moTa;
 		}
+		public Entity() {};
 		
 		public String getDinhDanh() {
 			return dinhDanh;

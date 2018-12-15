@@ -10,5 +10,7 @@ public class Person extends Entity{
 	public Person(String dinhDanh, String nhan) {
 		super(dinhDanh, nhan);
 	}
-	
+	public Person() {
+		super();
+	};
 }
