@@ -10,4 +10,7 @@ public class Organization extends Entity{
 		public Organization(String dinhDanh, String nhan) {
 			super(dinhDanh, nhan);
 		}
+		public Organization() {
+			super();
+		}
 }

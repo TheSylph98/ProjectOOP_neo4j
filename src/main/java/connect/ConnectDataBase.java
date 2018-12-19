@@ -1,77 +1,24 @@
 package connect;
+
 import java.util.*;  
-import static org.neo4j.driver.v1.Values.parameters;
 import org.neo4j.driver.v1.*;
-import entity.Country;
-import entity.Event;
-import entity.Location;
-import entity.Organization;
-import entity.Person;
-import entity.Time;
+
+import data.CreateEntityAll;
+import data.CreateLocation;
+import data.CreatePerson;
+import data.CreateRelation;
 
 public class ConnectDataBase {
 	Driver driver;
 	List<String> list=new ArrayList<String>();  
+	public final static ConnectDataBase connection = new ConnectDataBase("bolt://localhost:11007", "neo4j", "123456789");
 	
-	 public ConnectDataBase(String uri, String user, String password)
+	public ConnectDataBase(String uri, String user, String password)
 	    {
 	        driver =  GraphDatabase.driver(uri, AuthTokens.basic(user, password));
 	    }
-	    //
-	    public void addPerson(List<String> list ,Person p) {
-	    	 String s = "(:Person{dinhdanh: "+ p.getDinhDanh()
-	                    + ",name: "+ p.getNhan()
-	    			    + ",mota: "+p.getMoTa()
-	    			    + ",ngaythang:"+p.getNgayThang()
-	    			    + "})";
-	         list.add(s);
-	    }
-	    //
-	    public void addLocation(List<String> list ,Location p) {
-	    	 String s = "(:Location{dinhdanh: "+ p.getDinhDanh()
-	                    + ",name: "+ p.getNhan()
-	    			    + ",mota: "+p.getMoTa()
-	    			    + ",ngaythang:"+p.getNgayThang()
-	    			    + "})";
-	         list.add(s);
-	    }
-	    //
-	    public void addEvent(List<String> list ,Event p) {
-	    	 String s = "(:Event{dinhdanh: "+ p.getDinhDanh()
-	                    + ",name: "+ p.getNhan()
-	    			    + ",mota: "+p.getMoTa()
-	    			    + ",ngaythang:"+p.getNgayThang()
-	    			    + "})";
-	         list.add(s);
-	    }
-	    //
-	    public void addCountry(List<String> list ,Country p) {
-	    	 String s = "(:Country{dinhdanh: "+ p.getDinhDanh()
-	                    + ",name: "+ p.getNhan()
-	    			    + ",mota: "+p.getMoTa()
-	    			    + ",ngaythang:"+p.getNgayThang()
-	    			    + "})";
-	         list.add(s);
-	    }
-	    //
-	    public void addOrganization(List<String> list ,Organization p) {
-	    	 String s = "(:Organization{dinhdanh: "+ p.getDinhDanh()
-	                    + ",name: "+ p.getNhan()
-	    			    + ",mota: "+p.getMoTa()
-	    			    + ",ngaythang:"+p.getNgayThang()
-	    			    + "})";
-	         list.add(s);
-	    }
-	    //
-	    public void addTime(List<String> list ,Country p) {
-	    	 String s = "(:Time{dinhdanh: "+ p.getDinhDanh()
-	                    + ",name: "+ p.getNhan()
-	    			    + ",mota: "+p.getMoTa()
-	    			    + ",ngaythang:"+p.getNgayThang()
-	    			    + "})";
-	         list.add(s);
-	    }
-	    //
+	
+	  // tao thuc the
 	    public void createEntity(List<String> list) {	    	
 	    	 String query = "CREATE " + String.join(", ", list);
 	        try (Session session = driver.session())
@@ -83,37 +30,40 @@ public class ConnectDataBase {
 	            }
 	        }
 	    }
-	    // query
-	    public void query1()
-	    {
-	    	long start = System.currentTimeMillis();
-	        try (Session session = driver.session())
-	        {
-	        	System.out.println("Query1:");
-	            StatementResult result = session.run(
-	                    "MATCH (a:Person) WHERE a.name STARTS WITH {x} RETURN a.name AS name",
-	                    parameters("x","D" ));
-	            // Each Cypher execution returns a stream of records.
-	            while (result.hasNext())
+	    // tao quan he 
+	    public void CreateRel(String rel) {
+		try {
+			try (Session session = driver.session())
+	        {	            
+	            try (Transaction tx = session.beginTransaction())
 	            {
-	                Record record = result.next();
-	                System.out.println(record.get("name").asString());
+	                tx.run(rel);
+	                tx.success(); 
 	            }
-	            System.out.println("Time for query: " + (System.currentTimeMillis() - start));
 	        }
+		}
+		catch (Exception e) {
+			System.out.println(e.getMessage());
 	    }
-
+		}
+	   
 	    public void close()
 	    {
 	        // Closing a driver immediately shuts down all open connections.
 	        driver.close();
 	    }
 	    
-	    public static void main(String...args) {
-	    	ConnectDataBase con =new ConnectDataBase("bolt://localhost:11007", "neo4j", "123456789");
-	    	Person p= new Person("01","Dang Nhat Ta","...","http","...");
-	    	//con.addPerson(p);
-	    	con.query1();
-	    	con.close();
+	    public static void main( String[] args ) {
+	   
+    			ConnectDataBase connect = new ConnectDataBase("bolt://localhost:11007", "neo4j", "123456789");
+    			QueryData query = new QueryData();
+    			QuerySimpleData querysimple = new QuerySimpleData();
+    		//	CreateEntityAll entity= new  CreateEntityAll();
+    		 //  	 entity.CreateEntityA(1,1,1,1,1,1);
+    			querysimple.queryall();
+    		//	query.queryall();
+    		//	CreateRelation rel = new CreateRelation();
+    		//	rel.CreateRelationship();
+    			connect.close();
 	    }	
 }
